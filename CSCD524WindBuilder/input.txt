@@ -1,5 +1,1 @@
-height 12000, point, knots 10;
-height 9000, point, knots 20;
-height 6000, point, knots 30;
-height 3000, point, knots 40;
-height 0, circle, knots 20;
+height 15000, circle, knots 10, 20, 30, 40;
