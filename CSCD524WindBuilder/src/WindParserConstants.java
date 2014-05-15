@@ -23,23 +23,27 @@ public interface WindParserConstants {
   /** RegularExpression Id. */
   int POINT = 15;
   /** RegularExpression Id. */
-  int HEIGHT = 16;
+  int TORNADO = 16;
   /** RegularExpression Id. */
-  int SPEED = 17;
+  int SNAKE = 17;
   /** RegularExpression Id. */
-  int COMMA = 18;
+  int HEIGHT = 18;
   /** RegularExpression Id. */
-  int SEMICOLON = 19;
+  int SPEED = 19;
   /** RegularExpression Id. */
-  int PATTERN_DECIMAL = 20;
+  int COMMA = 20;
   /** RegularExpression Id. */
-  int LITERAL_NUMBER = 21;
+  int SEMICOLON = 21;
   /** RegularExpression Id. */
-  int IDENTIFIER = 22;
+  int PATTERN_DECIMAL = 22;
   /** RegularExpression Id. */
-  int LETTER = 23;
+  int LITERAL_NUMBER = 23;
   /** RegularExpression Id. */
-  int DIGIT = 24;
+  int IDENTIFIER = 24;
+  /** RegularExpression Id. */
+  int LETTER = 25;
+  /** RegularExpression Id. */
+  int DIGIT = 26;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -66,6 +70,8 @@ public interface WindParserConstants {
     "\"straight\"",
     "\"curve\"",
     "\"point\"",
+    "\"tornado\"",
+    "\"snake\"",
     "\"height\"",
     "\"knots\"",
     "\",\"",

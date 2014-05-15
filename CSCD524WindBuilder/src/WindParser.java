@@ -86,12 +86,23 @@ public class WindParser implements WindParserConstants {
       jj_consume_token(STRAIGHT);
                         argument.add("straight");
       break;
+    case POINT:
+      jj_consume_token(POINT);
+                        argument.add("point");
+      break;
+    case TORNADO:
+      jj_consume_token(TORNADO);
+                        argument.add("tornado");
+      break;
+    case SNAKE:
+      jj_consume_token(SNAKE);
+                        argument.add("snake");
+      break;
     default:
       jj_la1[1] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
-                //argument.add(arg);
                 {if (true) return argument;}
     throw new Error("Missing return statement in function");
   }
@@ -100,9 +111,28 @@ public class WindParser implements WindParserConstants {
         List<String> argument = new ArrayList<String>();
         String arg;
     jj_consume_token(SPEED);
-    jj_consume_token(LITERAL_NUMBER);
-                arg = token.image;
-                argument.add(arg);
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case LITERAL_NUMBER:
+        ;
+        break;
+      default:
+        jj_la1[2] = jj_gen;
+        break label_2;
+      }
+      jj_consume_token(LITERAL_NUMBER);
+                        arg = token.image;
+                        argument.add(arg);
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case COMMA:
+        jj_consume_token(COMMA);
+        break;
+      default:
+        jj_la1[3] = jj_gen;
+        ;
+      }
+    }
                 {if (true) return argument;}
     throw new Error("Missing return statement in function");
   }
@@ -116,13 +146,13 @@ public class WindParser implements WindParserConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[2];
+  final private int[] jj_la1 = new int[4];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x10000,0x3800,};
+      jj_la1_0 = new int[] {0x40000,0x3b800,0x800000,0x100000,};
    }
 
   /** Constructor with InputStream. */
@@ -136,7 +166,7 @@ public class WindParser implements WindParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 2; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -150,7 +180,7 @@ public class WindParser implements WindParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 2; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -160,7 +190,7 @@ public class WindParser implements WindParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 2; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -170,7 +200,7 @@ public class WindParser implements WindParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 2; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -179,7 +209,7 @@ public class WindParser implements WindParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 2; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -188,7 +218,7 @@ public class WindParser implements WindParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 2; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -239,12 +269,12 @@ public class WindParser implements WindParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[25];
+    boolean[] la1tokens = new boolean[27];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 4; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -253,7 +283,7 @@ public class WindParser implements WindParserConstants {
         }
       }
     }
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 27; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

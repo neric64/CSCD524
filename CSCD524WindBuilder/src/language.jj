@@ -61,6 +61,8 @@ TOKEN : // keywords
 	| < STRAIGHT : "straight" >
 	| < CURVE : "curve" >
 	| < POINT : "point" >
+	| < TORNADO : "tornado" >
+	| < SNAKE : "snake" >
 	| < HEIGHT : "height" >
 	| < SPEED : "knots" >
 }
@@ -189,10 +191,31 @@ private List<String> Direction() :
 		//make straight
 		{			argument.add("straight");
 		}
+
+		|
+
+		< POINT >
+		//make point
+		{			argument.add("point");
+		}
+
+		|
+
+		< TORNADO >
+		//make tornado
+		{			argument.add("tornado");
+		}
+
+		|
+
+		< SNAKE >
+		//make snake
+		{
+			argument.add("snake");
+		}
 	)
 
-	{
-		//argument.add(arg);		return argument;
+	{		return argument;
 	}
 }
 
@@ -204,12 +227,17 @@ private List<String> Speed() :
 	String arg;
 }
 {
-	< SPEED >	< LITERAL_NUMBER >
+	< SPEED >
+	(		< LITERAL_NUMBER >
+		{
+			arg = token.image;
+			argument.add(arg);
+		}
+		[
+			< COMMA >
+		]
+	)*
 	{
-		arg = token.image;
-	}
-
-	{		argument.add(arg);
 		return argument;
 	}
 }

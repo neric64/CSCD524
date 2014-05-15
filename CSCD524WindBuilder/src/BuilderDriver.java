@@ -14,7 +14,6 @@ public class BuilderDriver {
 	private static String[][] nine = new String[AREASIZE][AREASIZE];
 	private static String[][] twelve = new String[AREASIZE][AREASIZE];
 	private static String[][] fifteen = new String[AREASIZE][AREASIZE];
-	private static List<String[][]> windData = new ArrayList<String[][]>();
 	private static List<String> fromParser = new ArrayList<String>();
 	
 
@@ -35,8 +34,6 @@ public class BuilderDriver {
 			e.printStackTrace();
 		}
 		
-		//TODO make wind file
-		
 		printData();
 
 	} //end main
@@ -53,17 +50,21 @@ public class BuilderDriver {
 				makeBox(zero);
 			}
 			else if(fromParser.get(1).equals("circle")) {
-				//make circle
 				makeCircle(zero);
 			}
 			else if(fromParser.get(1).equals("straight")) {
-				//make straight
 				zero[5] = makeStraightLeft();
 				zero[5][0] = zero[5][2];
 				zero[5][AREASIZE -1] = zero[5][2]; 
 			}
+			else if(fromParser.get(1).equals("tornado")) {
+				makeTornado();
+			}
+			else if(fromParser.get(1).equals("snake")) {
+				makeSnake(zero);
+			}
 			else {
-				//make point
+				makePoint(zero);
 			}
 		}
 		else if(fromParser.get(0).equals("3000")) {
@@ -84,10 +85,347 @@ public class BuilderDriver {
 	} //end findHeight
 	
 	private static void makeCircle(String[][] ara) {
+		//if multiple speeds could do
+		//if(fromParser.size > 3) then do varying circle
+		//else one speed circle
+		//radius can't be bigger than 4
+		int radius = 4, x = 5, y = 5;
+
+		//If variable speeds within the circle then do the if
+		//If no variable speeds the the else
+		if(fromParser.size() > 3) {
+			//Right of circle
+			char temp = 'u';
+
+			if(fromParser.get(2).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else if(fromParser.get(2).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else if(fromParser.get(2).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else if(fromParser.get(2).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else {
+				ara[x][y + radius] = String.valueOf(temp);
+			}
+
+			//Bottom of circle
+			temp = 'E';
+
+			if(fromParser.get(3).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else if(fromParser.get(3).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else if(fromParser.get(3).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else if(fromParser.get(3).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else {
+				ara[x + radius][y] = String.valueOf(temp);
+			}
+
+			//Left of circle
+			temp = 'a';
+
+			if(fromParser.get(4).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else if(fromParser.get(4).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else if(fromParser.get(4).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else if(fromParser.get(4).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else {
+				ara[x][y - radius] = String.valueOf(temp);
+			}
+
+			//Top of circle or close
+			temp = 'k';
+
+			if(fromParser.get(5).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else if(fromParser.get(5).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else if(fromParser.get(5).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else if(fromParser.get(5).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else {
+				ara[x - radius][y] = String.valueOf(temp);
+			}
+		}
+		else {
+			//Right of circle
+			ara[x][y + radius] = "u";
+			char temp = 'u';
+			
+			if(fromParser.get(2).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else if(fromParser.get(2).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else if(fromParser.get(2).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else if(fromParser.get(2).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x][y + radius] = string;
+			}
+			else {
+				ara[x][y + radius] = String.valueOf(temp);
+			}
+
+			//Bottom of circle
+			temp = 'E';
+			
+			if(fromParser.get(2).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else if(fromParser.get(2).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else if(fromParser.get(2).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else if(fromParser.get(2).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x + radius][y] = string;
+			}
+			else {
+				ara[x + radius][y] = String.valueOf(temp);
+			}
+
+			//Left of circle
+			temp = 'a';
+			
+			if(fromParser.get(2).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else if(fromParser.get(2).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else if(fromParser.get(2).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else if(fromParser.get(2).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x][y - radius] = string;
+			}
+			else {
+				ara[x][y - radius] = String.valueOf(temp);
+			}
+
+			//Top of circle or close
+			temp = 'k';
+			
+			if(fromParser.get(2).equals("20")) {
+				temp++;
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else if(fromParser.get(2).equals("30")) {
+				temp = (char) (temp + 2);
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else if(fromParser.get(2).equals("40")) {
+				temp = (char) (temp + 3);
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else if(fromParser.get(2).equals("50")) {
+				temp = (char) (temp + 4);
+				String string = String.valueOf(temp);
+				ara[x - radius][y] = string;
+			}
+			else {
+				ara[x - radius][y] = String.valueOf(temp);
+			}
+		}
+	} //end makeCircle
+	
+	private static void makeSnake(String[][] ara) {
 		//TODO
-		//thinking about using radius to find points for circle
-		//radius can't be bigger than 5
-	}
+	} //end makeSnake
+	
+	private static void makeTornado() {
+		//radius can't be bigger than 4
+		int radius = 5, x = 5, y = 5;
+
+		//fifteen
+		//Right of circle
+		fifteen[x][y + radius] = "y";
+
+		//Bottom of circle
+		fifteen[x + radius][y] = "I";
+
+		//Left of circle
+		fifteen[x][y - radius] = "e";
+
+		//Top of circle or close
+		fifteen[x - radius][y] = "o";
+
+		//twelve
+		radius += -1;
+		
+		//Right of circle
+		twelve[x][y + radius] = "x";
+
+		//Bottom of circle
+		twelve[x + radius][y] = "H";
+
+		//Left of circle
+		twelve[x][y - radius] = "d";
+
+		//Top of circle or close
+		twelve[x - radius][y] = "n";
+
+		//nine
+		radius += -1;
+		
+		//Right of circle
+		nine[x][y + radius] = "w";
+
+		//Bottom of circle
+		nine[x + radius][y] = "G";
+
+		//Left of circle
+		nine[x][y - radius] = "c";
+
+		//Top of circle or close
+		nine[x - radius][y] = "m";
+
+		//six
+		radius += -1;
+		
+		//Right of circle
+		six[x][y + radius] = "v";
+
+		//Bottom of circle
+		six[x + radius][y] = "F";
+
+		//Left of circle
+		six[x][y - radius] = "b";
+
+		//Top of circle or close
+		six[x - radius][y] = "l";
+
+		//three
+		radius += -1;
+		
+		//Right of circle
+		three[x][y + radius] = "u";
+
+		//Bottom of circle
+		three[x + radius][y] = "E";
+
+		//Left of circle
+		three[x][y - radius] = "a";
+
+		//Top of circle or close
+		three[x - radius][y] = "k";
+
+
+	} //end makeTornado
+	
+	private static void makePoint(String[][] ara) {
+		char temp = 'a';
+		
+		if(fromParser.get(2).equals("20")) {
+			temp++;
+			String string = String.valueOf(temp);
+			ara[5][5] = string;
+		}
+		else if(fromParser.get(2).equals("30")) {
+			temp = (char) (temp + 2);
+			String string = String.valueOf(temp);
+			ara[5][5] = string;
+		}
+		else if(fromParser.get(2).equals("40")) {
+			temp = (char) (temp + 3);
+			String string = String.valueOf(temp);
+			ara[5][5] = string;
+		}
+		else if(fromParser.get(2).equals("50")) {
+			temp = (char) (temp + 4);
+			String string = String.valueOf(temp);
+			ara[5][5] = string;
+		}
+		else {
+			ara[5][5] = String.valueOf(temp);
+		}
+	} //end makePoint
+	
 	
 	private static void makeBox(String[][] ara) {
 		
@@ -120,7 +458,7 @@ public class BuilderDriver {
 					ara[y][1] = string;
 				}
 				else {
-					ara[y][1] = "a";
+					ara[y][1] = String.valueOf(temp);
 				}
 			}
 		}
@@ -161,6 +499,7 @@ public class BuilderDriver {
 		
 	} //end makeBox
 	
+	
 	private static String[] makeStraightLeft() {
 		String[] temp = new String[AREASIZE];
 		
@@ -195,12 +534,13 @@ public class BuilderDriver {
 					temp[x] = string;
 				}
 				else {
-					temp[x] = "l";
+					temp[x] = String.valueOf(letter);
 				}
 			}
 		}
 		return temp;
 	} //end makeStraightLeft
+	
 	
 	private static String[] makeStraightRight() {
 		String[] temp = new String[AREASIZE];
@@ -236,13 +576,14 @@ public class BuilderDriver {
 					temp[x] = string;
 				}
 				else {
-					temp[x] = "E";
+					temp[x] = String.valueOf(letter);
 				}
 			}
 		}
 		
 		return temp;
 	} //end makeStraightRight
+	
 
 	private static void initArea() {
 
