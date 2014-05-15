@@ -1,0 +1,221 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */options{  JDK_VERSION = "1.5";
+  DEBUG_PARSER = false;  static = false;}PARSER_BEGIN(WindParser)
+
+import java.util.*;
+import java.io.*;
+public class WindParser{
+	private String filePath;
+  	public WindParser(final String inputFileName, final String outputFileName) throws IOException	{		this(new BufferedReader(new FileReader(inputFileName)));
+
+		assert (outputFileName != null);
+
+		filePath = outputFileName;
+	}
+}
+
+PARSER_END(WindParser)//-------------------------------------------------------------------------------------------------------------------------------
+SKIP : // whitespace
+{
+    " "
+  | "\f"
+  | "\n"
+  | "\r"
+  | "\t"
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+MORE : // comments
+{
+  "//" : IN_SINGLE_LINE_COMMENT
+|
+  "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT, IN_MULTI_LINE_COMMENT>
+MORE :
+{
+  < ~[] >
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+TOKEN : // keywords
+{
+	< CIRCLE : "circle" >
+	| < BOX : "box" >
+	| < STRAIGHT : "straight" >
+	| < CURVE : "curve" >
+	| < POINT : "point" >
+	| < HEIGHT : "height" >
+	| < SPEED : "knots" >
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+TOKEN : // delimiters
+{
+	< COMMA     : ","  >
+	| < SEMICOLON : ";" >
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+TOKEN : // literals
+{
+    < #PATTERN_DECIMAL      : ["0"-"9"] >
+	| < LITERAL_NUMBER 		: (< PATTERN_DECIMAL >)+ >
+} 
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+TOKEN : // identifiers
+{
+    < IDENTIFIER : <LETTER> ( <LETTER> | <DIGIT> )* >
+  | < #LETTER : ["a"-"z", "A"-"Z", "_"] >
+  | < #DIGIT  : ["0"-"9"] >
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------public void parse() :
+{
+	List<String> argument = new ArrayList<String>();
+}
+{
+	(
+		argument = command()
+
+		{
+		  BuilderDriver.giveList(argument);			System.out.println("arguments: " + argument);
+		}
+	)*
+
+	{		//BuilderDriver.giveList(argument);
+	}
+
+	<EOF>
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+private List<String> command() :
+{
+	List<String> argument = new ArrayList<String>();
+	List<String> argumentH = new ArrayList<String>();
+	List<String> argumentD = new ArrayList<String>();
+	List<String> argumentS = new ArrayList<String>();
+}
+{	//(
+		argumentH = Height()
+		< COMMA >
+
+		//|
+
+		argumentD = Direction()
+		< COMMA >
+
+		//|
+
+		argumentS = Speed()
+
+	//)
+
+	< SEMICOLON >
+
+		{
+			argument.addAll(argumentH);
+			argument.addAll(argumentD);
+			argument.addAll(argumentS);
+						return argument;
+		}
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+private List<String> Height() :
+{	List<String> argument = new ArrayList<String>();
+	String arg;
+}
+{	< HEIGHT >
+	< LITERAL_NUMBER >
+	{
+		arg = token.image;
+		argument.add(arg);
+	}
+
+	
+
+	{
+		//argument.add(arg);
+		return argument;
+	}
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+private List<String> Direction() :
+{
+	List<String> argument = new ArrayList<String>();
+	String arg;
+}
+{	(		< CIRCLE >
+		//make circle
+		{		  argument.add("circle");
+		}
+		
+		|
+
+		< BOX >
+		//make box
+		{			argument.add("box");
+		}
+		
+		|
+
+		< STRAIGHT >
+		//make straight
+		{			argument.add("straight");
+		}
+	)
+
+	{
+		//argument.add(arg);		return argument;
+	}
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+private List<String> Speed() :
+{
+	List<String> argument = new ArrayList<String>();
+	String arg;
+}
+{
+	< SPEED >	< LITERAL_NUMBER >
+	{
+		arg = token.image;
+	}
+
+	{		argument.add(arg);
+		return argument;
+	}
+}
+
+
+
+
+
+

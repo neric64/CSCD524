@@ -1,0 +1,4 @@
+height 0, straight, knots 10;
+height 6000, box, knots 20;
+height 0, circle, knots 10;
+height 9000, box, knots 30;
