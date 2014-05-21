@@ -1,13 +1,19 @@
+import java.util.ArrayList;
+
 
 public class Real {
 
 	private int value, scale;
 	private double dValue;
+	private int realValue;
+	private ArrayList<String> binary = new ArrayList<String>();
 	
 	public Real(int value, int scale, double dValue) {
 		this.value = value;
 		this.scale = scale;
 		this.dValue = dValue;
+		
+		fromDecToString();
 	}
 	
 	//None of the following are correct they are just place holders for now.
