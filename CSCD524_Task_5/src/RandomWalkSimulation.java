@@ -20,7 +20,7 @@ public class RandomWalkSimulation {
 		
 		do {
 			for(int i = 0; i < this.walk; i++) {
-				this.error = walk.execute();
+				this.error = walk.execute(this.seed);
 				this.errorHolder.add(error);
 				this.builder.append("Error for x axis: " + this.error[0][i] + "\n");
 				this.builder.append("Error for y axis: " + this.error[1][i] + "\n");
@@ -79,8 +79,4 @@ public class RandomWalkSimulation {
 	public ArrayList<double[][]> getErrorHolder() {
 		return this.errorHolder;
 	} //end getErrorHolder
-	
-	public int getSeed() {
-		return this.seed;
-	}
 }

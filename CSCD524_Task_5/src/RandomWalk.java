@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class RandomWalk {
 
-	private int walkDistance;
+	private int walkDistance, seed;
 	private Real[] realX;
 	private Real[] realY;
 	private float[] floatX;
@@ -16,9 +16,10 @@ public class RandomWalk {
 		this.walkDistance = walk;
 	}
 	
-	public double[][] execute() {
+	public double[][] execute(int seed) {
 		initMaps();
 		double[][] errors = null;
+		this.seed = seed;
 		
 		for(int i = 0; i < this.walkDistance; i++) {
 			this.floatX[i] = getRandFloat();
@@ -50,12 +51,12 @@ public class RandomWalk {
 	} //end getError
 	
 	private float getRandFloat() {
-		Random rand = new Random();
-		return MIN + (rand.nextFloat() * ((1 + MAX) - MIN));
+		Random rand = new Random(this.seed);
+		return MIN + (rand.nextFloat() * ((1 + (MAX * 2)) - MIN));
 	} //end getRandFloat
 	
 	private double getRandDouble() {
-		Random rand = new Random();
+		Random rand = new Random(this.seed);
 		return MIN + (rand.nextDouble() * ((1 + MAX) - MIN));
 	} //end getRandDouble
 	

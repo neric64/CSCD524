@@ -20,6 +20,9 @@ public class Real {
 		this.scale = scale;
 		this.dValue = dValue;  
 		this.realNum = (int) dValue;
+		
+		splitDouble(this.dValue);
+		
 	}
 	
 	public Real add(Real num) {
@@ -27,8 +30,8 @@ public class Real {
 		double h;
 		int x, y;
 		
-		x = toBinary(this.realNum);
-		y = toBinary(num.realNum);
+		x = toBinary(this.realNum);	//Old
+		y = toBinary(num.realNum);	//Old
 		
 		int t = x + y;
 		
@@ -87,6 +90,38 @@ public class Real {
 	public double getValue() {
 		return this.dValue;
 	} //end getValue
+	
+	
+	/*
+	 * Taking the incoming double and spliting it into a string array
+	 * then parsing it out to get the negitive, if there is one, the whole number and the decimal number
+	 */
+	private void splitDouble(double num) {
+		String[] tokens;
+		String delim = "[.]";
+		String s = Double.toString(num);
+		
+		tokens = s.split(delim);
+		
+		String[] temp = null;
+		
+		if(tokens[0].contains("-")) {
+			temp = new String[3];
+			int index = tokens[0].indexOf("-");
+			temp[0] = tokens[0].substring(index, 1);
+			temp[1] = tokens[0].substring(index + 1);
+			temp[2] = tokens[1];
+		}
+		
+		for(int i = 0; i < temp.length; i++) {
+			if(temp.equals(null)) {
+				
+			}
+			else
+				System.out.print(temp[i] + " ");
+		}
+		System.out.println();
+	}
 	
 	private int toBinary(int num) {
 		String temp;
