@@ -27,7 +27,7 @@ public class Client {
 			}
 			
 			try {
-				TimeUnit.SECONDS.sleep(10);	//might need to play with the time it sleeps
+				TimeUnit.SECONDS.sleep(1);	//might need to play with the time it sleeps
 			}
 			catch(InterruptedException e) {
 				e.printStackTrace();
@@ -40,6 +40,8 @@ public class Client {
 	private void connectCList(AP[] list) {
 		Scanner reader = null;
 		String s;
+		int index = 0, count =0;
+		boolean gotOne = false;
 		
 		try {
 			reader = new Scanner(this.cList);
@@ -47,20 +49,19 @@ public class Client {
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		while(reader.hasNext()) {
 			s = reader.nextLine();
 			
-			for(int i = 0; i < list.length; i++) {
-				if(s.equals(list[i].getMacA()) && list[i].getSig() > 0) {
-					connectTo(list[i]);
-					break;
+			do {
+				if(s.equals(list[count].getMacA()) && list[count].getSig() > 0) {
+					gotOne = true;
+					index = count;
 				}
-			}
+				count++;
+			} while(!gotOne && reader.hasNext());
 			
-			System.out.println("No Access Points within range.");
+			connectTo(list[index]);
 			
-		}
+			//System.out.println("No Access Points within range.");	//not in the right spot
 		
 	} //end connectCList
 	
@@ -83,7 +84,7 @@ public class Client {
 		
 		do {
 			index = getUserInput(list.size());
-		} while(index == 0);
+		} while(index == -1);
 		
 		connectTo(list.get(index));
 		
@@ -93,7 +94,7 @@ public class Client {
 		if(this.firstTime) {
 			this.cList = ap.giveCList();
 			this.firstTime = false;
-			System.out.println("Connected for the first time.");	//for testing
+			System.out.println("Connected to Access Point: " + ap.getMacA());	//for testing
 		}
 		else
 			System.out.println("Connected to Access Point: " + ap.getMacA());	//for testing
@@ -101,17 +102,18 @@ public class Client {
 	
 	private int getUserInput(int size) {
 		Scanner kb = new Scanner(System.in);
-		int in, index = 0;
+		int in, index = -1;
 		
 		in = kb.nextInt();
+		kb.nextLine();
 		
 		for(int i = 0; i < size; i++) {
-			if(in == (i + 1)) {
-				index = i;
+			if((in - 1) == i) {
+				index = (i);
 			}
 		}
 		
-		if(index == 0) {
+		if(index == -1) {
 			System.out.println("Choose a number between 1 and " + size);
 		}
 		return index;
