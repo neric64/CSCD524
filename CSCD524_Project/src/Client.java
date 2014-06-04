@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -8,115 +7,94 @@ import java.util.concurrent.TimeUnit;
 public class Client {
 	
 	private File cList = null;
+	private AP[] activeList;
 	private boolean firstTime = true;
+	private Scanner reader = null;
+	private String currentAP;
+	private int count =0;
 	
 	public Client() {
 		
 	}
 	
-	public void roam(AP[] list) {
-		if(this.firstTime == false) {
-			connectCList(list);
+	public void setCurrentAP(String s) {
+		this.currentAP = s;
+	} //end setCurrentAP
+	
+	public void setActiveList(AP[] list) {
+		this.activeList = list;
+	} //end setActiveList
+	
+	public void roamWithoutList() {
+		if(this.firstTime) {
+			this.cList = this.activeList[0].giveCList();
+			this.firstTime = false;
 		}
-		else {
-			ArrayList<AP> temp = new ArrayList<AP>();
-			for(int i = 0; i < list.length; i++) {
-				if(list[i].getSig() > 0) {
-					temp.add(list[i]);
-				}
-			}
-			
-			try {
-				TimeUnit.SECONDS.sleep(1);	//might need to play with the time it sleeps
-			}
-			catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			connect(temp);
+		try {
+			TimeUnit.SECONDS.sleep(1);	//might need to play with the time it sleeps
 		}
+		catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		connect();
 	} //end roam
 	
-	private void connectCList(AP[] list) {
-		Scanner reader = null;
+	public void roamWithList() {
+			connectCList();	//After connecting the first time the client has the list
+	} //end roam
+
+	
+	private void connectCList() {	//was passing in AP[] list to check the CList against
 		String s;
-		int index = 0, count =0;
+		int index = 0;
 		boolean gotOne = false;
 		
 		try {
-			reader = new Scanner(this.cList);
+			this.reader = new Scanner(this.cList);
 		}
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
-			s = reader.nextLine();
-			
+			s = this.reader.nextLine();
+			/*
+			 * TODO
+			 * I keep getting indexoutofboundexceptions here need to re-think
+			 */
+//=======================================================================================			
 			do {
-				if(s.equals(list[count].getMacA()) && list[count].getSig() > 0) {
-					gotOne = true;
-					index = count;
+				if(s.equals(this.activeList[this.count].getMacA())) {
+					if(this.activeList[this.count].getSig() > 0 && !this.activeList[this.count].isFull()) {
+						if(this.activeList[this.count].getMacA().equals(this.currentAP)) {
+							//Do nothing
+						}
+						else {
+							gotOne = true;
+							index = this.count;
+						}
+					}
 				}
-				count++;
-			} while(!gotOne && reader.hasNext());
-			
-			connectTo(list[index]);
-			
-			//System.out.println("No Access Points within range.");	//not in the right spot
+				this.count++;
+			} while(!gotOne && this.reader.hasNext());
+//=======================================================================================			
+			connectTo(this.activeList[index]);
 		
 	} //end connectCList
 	
-	private void connect(ArrayList<AP> list) {
-		StringBuilder string = new StringBuilder();
-		int index;
+	private void connect() {
+		AP ap = null;
 		
-		string.append("Which Access Point would you like to connect to\n");
-		
-		for(int i = 0; i < list.size(); i++) {
-			string.append((i + 1));
-			string.append(" mac Address: ");
-			string.append(list.get(i).getMacA());
-			string.append(", Signal strength: ");
-			string.append(list.get(i).getSig());
-			string.append("\n");
+		for(int i = (this.activeList.length - 1); i > 0; i--) {
+			if(this.activeList[i].getSig() > 30 && this.activeList[i].isFull() == false) {
+				ap = this.activeList[i];
+			}
 		}
-		
-		System.out.println(string);
-		
-		do {
-			index = getUserInput(list.size());
-		} while(index == -1);
-		
-		connectTo(list.get(index));
+		connectTo(ap);
 		
 	} //end connect
 	
 	private void connectTo(AP ap) {
-		if(this.firstTime) {
-			this.cList = ap.giveCList();
-			this.firstTime = false;
-			System.out.println("Connected to Access Point: " + ap.getMacA());	//for testing
-		}
-		else
-			System.out.println("Connected to Access Point: " + ap.getMacA());	//for testing
+		System.out.println("Connected to Access Point: " + ap.getMacA());	//for testing
+		this.currentAP = ap.getMacA();
 	} //end connectTo
-	
-	private int getUserInput(int size) {
-		Scanner kb = new Scanner(System.in);
-		int in, index = -1;
-		
-		in = kb.nextInt();
-		kb.nextLine();
-		
-		for(int i = 0; i < size; i++) {
-			if((in - 1) == i) {
-				index = (i);
-			}
-		}
-		
-		if(index == -1) {
-			System.out.println("Choose a number between 1 and " + size);
-		}
-		return index;
-	} //end getUserInput
 
 }

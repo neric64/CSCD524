@@ -1,39 +1,49 @@
 import java.util.Scanner;
 
 public class Driver {
+	
+	/*
+	 * TODO
+	 * For initial connection connect automatically
+	 * 
+	 * Give one option for connecting instead of a list of all as you would roam from one AP in
+	 * a network and not cross networks.
+	 * 
+	 * Then print of a menu of things like
+	 * roaming with out candidacy list
+	 * roaming with candidacy list
+	 * print candidacy list
+	 * 
+	 * 
+	 * have multiple AP after getting mac address while trying to connect need to make sure client is getting
+	 * a signal from that AP
+	 */
 
 	public static void main(String[] args) {
 		int size = 5;
 		AP[] list = new AP[size];
 		APFactory factory = new APFactory();
 		Client client = new Client();
-		StringBuilder builder = new StringBuilder();
-		Scanner kb = new Scanner(System.in);
-		String input;
 		
 		for(int i = 0; i < size; i++) {
 			list[i] = factory.makeAP();
 		}
 		
+		factory.closeScanner();
+		
 		initAP(list);
 		
-		System.out.println("Would you like to connect an Access Point for the first time?");
-		input = kb.nextLine();
+		client.setActiveList(list);
 		
-		if(input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
-			client.roam(list);
-		}
-		else {
-			System.out.println("OK goodbye then.");
-			System.exit(0);
-		}
+		System.out.println("Connecting to the network for the first time.");
 		
-		menu(list, builder, kb, client);
+		client.roamWithoutList();
+		
+		menu(list, client);
 		
 		
 	} //end main
 	
-	//TODO I haven't test this to see if it works yet or not
 	private static void initAP(AP[] list) {
 		list[0].buildCList(list);
 		
@@ -42,14 +52,18 @@ public class Driver {
 		}
 	}
 	
-	private static void menu(AP[] list, StringBuilder builder, Scanner kb, Client client) {
+	private static void menu(AP[] list, Client client) {
 		int input = 0;
+		Scanner kb = new Scanner(System.in);
+		StringBuilder builder = new StringBuilder();
 		
-		builder.append("1. Connect to another Access Point\n");
-		builder.append("2. Print Candidacy List\n");
-		builder.append("3. quit\n");
+		builder.append("1. Roam without using Candidacy List.\n");
+		builder.append("2. Roam using Candidacy List.\n");
+		//builder.append("3. Print visible access points.\n");	//not sure if I want to use
+		builder.append("3. Print Candidacy List\n");	//need to change back to 4 or delete above
+		builder.append("5. quit\n");
 		
-		while(input != 3) {
+		while(input != 5) {
 			System.out.println(builder);
 			
 			input = kb.nextInt();
@@ -57,15 +71,19 @@ public class Driver {
 			
 			options(list, client, input);
 		}
+		kb.close();
 	} //end menu
 	
 	private static void options(AP[] list, Client client, int input) {
 		if(input == 1) {
-			client.roam(list);
+			client.roamWithoutList();
 		}
 		else if(input == 2) {
+			client.roamWithList();
+		}
+		else if(input == 3) {
 			list[0].readCList();
 		}
-	}
+	} //end options
 
 }

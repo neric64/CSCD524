@@ -19,6 +19,7 @@ public class AP {
 	}
 	
 	/*
+	 * TODO
 	 * Building the candidacy list
 	 * Should only need one AP to build the list and then hand it off to other APs
 	 * 
@@ -45,6 +46,7 @@ public class AP {
 		
 	} //end buildCList
 	
+	//TODO
 	//Might be just for testing
 	public void readCList() {
 		Scanner reader = null;
@@ -58,6 +60,8 @@ public class AP {
 		while(reader.hasNext()) {
 			System.out.println(reader.nextLine());
 		}
+		
+		reader.close();
 		
 	} //end readCList
 	
