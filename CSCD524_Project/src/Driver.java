@@ -10,7 +10,7 @@ public class Driver {
 	 * a network and not cross networks.
 	 * 
 	 * Then print of a menu of things like
-	 * roaming with out candidacy list
+	 * roaming without candidacy list
 	 * roaming with candidacy list
 	 * print candidacy list
 	 * 

@@ -31,7 +31,7 @@ public class Client {
 			this.firstTime = false;
 		}
 		try {
-			TimeUnit.SECONDS.sleep(1);	//might need to play with the time it sleeps
+			TimeUnit.SECONDS.sleep(10);	//might need to play with the time it sleeps
 		}
 		catch(InterruptedException e) {
 			e.printStackTrace();
@@ -59,19 +59,24 @@ public class Client {
 			/*
 			 * TODO
 			 * I keep getting indexoutofboundexceptions here need to re-think
+			 * it can loop more times than there are AP thus the out of bounds error
 			 */
+			
+			for(int i = 0; i < this.count; i++) {
+				s = this.reader.nextLine();
+			}
 //=======================================================================================			
 			do {
 				if(s.equals(this.activeList[this.count].getMacA())) {
-					if(this.activeList[this.count].getSig() > 0 && !this.activeList[this.count].isFull()) {
-						if(this.activeList[this.count].getMacA().equals(this.currentAP)) {
+					//if(this.activeList[this.count].getSig() > 0 && !this.activeList[this.count].isFull()) {
+						//if(this.activeList[this.count].getMacA().equals(this.currentAP)) {
 							//Do nothing
-						}
-						else {
+						//}
+						//else {
 							gotOne = true;
 							index = this.count;
-						}
-					}
+						//}
+					//}
 				}
 				this.count++;
 			} while(!gotOne && this.reader.hasNext());
